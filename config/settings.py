@@ -47,6 +47,9 @@ INSTALLED_APPS = [
     # djangorestframework
     'rest_framework',
     
+    #phonenumber_field
+    'phonenumber_field',
+    
     #custom apps
     'users.apps.UsersConfig',
     
@@ -139,5 +142,9 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AUTHENTICATION_BACKENDS = [
+    'users.authentication.EmailAuthBackend',
+]
 
 AUTH_USER_MODEL = 'users.User'

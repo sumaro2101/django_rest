@@ -39,7 +39,7 @@ class Lesson(models.Model):
                                    max_length=200,
                                    )
     
-    descriptons = models.TextField(verbose_name='описание',
+    description = models.TextField(verbose_name='описание',
                                    blank=True,
                                    null=True,
                                    )

@@ -53,6 +53,8 @@ class Lesson(models.Model):
     video_link = models.FileField(verbose_name='ссылка на видео',
                                          upload_to='courses/videos/%Y/%m/%d/',
                                          max_length=256,
+                                         blank=True,
+                                         null=True,
                                          )
     
 

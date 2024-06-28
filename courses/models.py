@@ -33,6 +33,7 @@ class Lesson(models.Model):
     course = models.ForeignKey("courses.Course",
                                verbose_name="курс",
                                on_delete=models.CASCADE,
+                               related_name='lessons'
                                )
     
     lesson_name = models.CharField("название урока",

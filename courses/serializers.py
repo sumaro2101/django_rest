@@ -4,6 +4,7 @@ from courses.models import Course, Lesson
 
 class CourseSerializer(serializers.ModelSerializer):
     
+    lessons = serializers.SerializerMethodField(read_only=True)
     
     class Meta:
         model = Course
@@ -11,7 +12,11 @@ class CourseSerializer(serializers.ModelSerializer):
                   'course_name',
                   'course_preview',
                   'description',
+                  'lessons',
                   )
+        
+    def get_lessons(self, instance):
+        return instance.lessons.get_queryset().count()
         
 
 class LessonSerializer(serializers.ModelSerializer):

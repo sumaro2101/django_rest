@@ -15,7 +15,18 @@ class PaymentsSerializers(serializers.ModelSerializer):
                   'payment_amount',
                   'payment_method',
                   )
+    
+    def create(self, validated_data):
+        pay_course = validated_data.get('pay_course')
+        pay_lesson = validated_data.get('pay_lesson')
         
+        if pay_course and pay_lesson:
+            raise ValueError('pay_course и pay_lesson не могут быть опеределенны вместе')
+        if not pay_course and not pay_lesson:
+            raise ValueError('Нужно опередить одно из полей (pay_course, pay_lesson)')
+        
+        return super().create(validated_data)
+    
 
 class UserSerializers(serializers.ModelSerializer):
     payments_info = PaymentsSerializers(many=True, read_only=True, source='payments')

@@ -13,7 +13,7 @@ class ViewUpdateUser(generics.RetrieveUpdateAPIView):
     serializer_class = UserSerializers
 
 
-class PaymentsListAPIView(generics.ListAPIView):
+class PaymentsListAPIView(generics.ListCreateAPIView):
     queryset = Payments.objects.get_queryset()
     serializer_class = PaymentsSerializers
     filter_backends = (DjangoFilterBackend,

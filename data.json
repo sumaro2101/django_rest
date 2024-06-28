@@ -117,6 +117,84 @@
         }
     },
     {
+        "model": "admin.logentry",
+        "pk": 10,
+        "fields": {
+            "action_time": "2024-06-28T18:28:00.388Z",
+            "user": 1,
+            "content_type": 9,
+            "object_id": "5",
+            "object_repr": "Payments object (5)",
+            "action_flag": 1,
+            "change_message": "[{\"added\": {}}]"
+        }
+    },
+    {
+        "model": "admin.logentry",
+        "pk": 11,
+        "fields": {
+            "action_time": "2024-06-28T18:28:15.581Z",
+            "user": 1,
+            "content_type": 9,
+            "object_id": "6",
+            "object_repr": "Payments object (6)",
+            "action_flag": 1,
+            "change_message": "[{\"added\": {}}]"
+        }
+    },
+    {
+        "model": "admin.logentry",
+        "pk": 12,
+        "fields": {
+            "action_time": "2024-06-28T18:28:30.914Z",
+            "user": 1,
+            "content_type": 9,
+            "object_id": "7",
+            "object_repr": "Payments object (7)",
+            "action_flag": 1,
+            "change_message": "[{\"added\": {}}]"
+        }
+    },
+    {
+        "model": "admin.logentry",
+        "pk": 13,
+        "fields": {
+            "action_time": "2024-06-28T18:28:46.552Z",
+            "user": 1,
+            "content_type": 9,
+            "object_id": "8",
+            "object_repr": "Payments object (8)",
+            "action_flag": 1,
+            "change_message": "[{\"added\": {}}]"
+        }
+    },
+    {
+        "model": "admin.logentry",
+        "pk": 14,
+        "fields": {
+            "action_time": "2024-06-28T18:28:58.454Z",
+            "user": 1,
+            "content_type": 9,
+            "object_id": "9",
+            "object_repr": "Payments object (9)",
+            "action_flag": 1,
+            "change_message": "[{\"added\": {}}]"
+        }
+    },
+    {
+        "model": "admin.logentry",
+        "pk": 15,
+        "fields": {
+            "action_time": "2024-06-28T18:29:11.935Z",
+            "user": 1,
+            "content_type": 9,
+            "object_id": "10",
+            "object_repr": "Payments object (10)",
+            "action_flag": 1,
+            "change_message": "[{\"added\": {}}]"
+        }
+    },
+    {
         "model": "auth.permission",
         "pk": 1,
         "fields": {
@@ -617,6 +695,78 @@
             "pay_lesson": 14,
             "payment_amount": "4000.00",
             "payment_method": "money_transfer"
+        }
+    },
+    {
+        "model": "users.payments",
+        "pk": 5,
+        "fields": {
+            "user": 3,
+            "date_of_pay": "2024-06-28T18:28:00.386Z",
+            "pay_course": null,
+            "pay_lesson": 9,
+            "payment_amount": "4032.12",
+            "payment_method": "money_transfer"
+        }
+    },
+    {
+        "model": "users.payments",
+        "pk": 6,
+        "fields": {
+            "user": 2,
+            "date_of_pay": "2024-06-28T18:28:15.580Z",
+            "pay_course": null,
+            "pay_lesson": 10,
+            "payment_amount": "2221.33",
+            "payment_method": "cash"
+        }
+    },
+    {
+        "model": "users.payments",
+        "pk": 7,
+        "fields": {
+            "user": 3,
+            "date_of_pay": "2024-06-28T18:28:30.913Z",
+            "pay_course": null,
+            "pay_lesson": 12,
+            "payment_amount": "5421.43",
+            "payment_method": "money_transfer"
+        }
+    },
+    {
+        "model": "users.payments",
+        "pk": 8,
+        "fields": {
+            "user": 3,
+            "date_of_pay": "2024-06-28T18:28:46.551Z",
+            "pay_course": null,
+            "pay_lesson": 12,
+            "payment_amount": "9943.23",
+            "payment_method": "cash"
+        }
+    },
+    {
+        "model": "users.payments",
+        "pk": 9,
+        "fields": {
+            "user": 2,
+            "date_of_pay": "2024-06-28T18:28:58.453Z",
+            "pay_course": null,
+            "pay_lesson": 14,
+            "payment_amount": "5432.43",
+            "payment_method": "money_transfer"
+        }
+    },
+    {
+        "model": "users.payments",
+        "pk": 10,
+        "fields": {
+            "user": 3,
+            "date_of_pay": "2024-06-28T18:29:11.934Z",
+            "pay_course": null,
+            "pay_lesson": 15,
+            "payment_amount": "4214.12",
+            "payment_method": "cash"
         }
     },
     {

@@ -35,6 +35,7 @@ class Payments(models.Model):
     user = models.ForeignKey(get_user_model(),
                              verbose_name='пользователь',
                              on_delete=models.DO_NOTHING,
+                             related_name='payments'
                              )
     
     date_of_pay = models.DateTimeField(auto_now_add=True,

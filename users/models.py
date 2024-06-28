@@ -45,6 +45,7 @@ class Payments(models.Model):
                                    verbose_name='платеж курса',
                                    blank=True,
                                    null=True,
+                                   default=None,
                                    on_delete=models.DO_NOTHING,
                                    )
     
@@ -52,18 +53,20 @@ class Payments(models.Model):
                                    verbose_name='платеж урока',
                                    blank=True,
                                    null=True,
+                                   default=None,
                                    on_delete=models.DO_NOTHING,
                                    )
     
-    payment_amount = models.PositiveIntegerField(verbose_name='сумма оплаты',
-                                                 editable=False,
-                                                 )
+    payment_amount = models.DecimalField(verbose_name='сумма оплаты',
+                                        max_digits=10,
+                                        decimal_places=2,
+                                        )
     
     payment_method = models.CharField(max_length=50,
                                       verbose_name='способ оплаты',
                                       choices=(
                                           ('cash', 'наличные'),
-                                          ('modey_transfer', 'перевод денег'),
+                                          ('money_transfer', 'перевод денег'),
                                       ),
                                       )
     

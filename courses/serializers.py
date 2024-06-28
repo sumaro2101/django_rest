@@ -1,24 +1,6 @@
 from rest_framework import serializers
 from courses.models import Course, Lesson
 
-
-class CourseSerializer(serializers.ModelSerializer):
-    
-    lessons = serializers.SerializerMethodField(read_only=True)
-    
-    class Meta:
-        model = Course
-        fields = ('pk',
-                  'course_name',
-                  'course_preview',
-                  'description',
-                  'lessons',
-                  )
-        
-    def get_lessons(self, instance):
-        return instance.lessons.get_queryset().count()
-        
-
 class LessonSerializer(serializers.ModelSerializer):
     
     
@@ -31,4 +13,24 @@ class LessonSerializer(serializers.ModelSerializer):
                   'lesson_preview',
                   'video_link',
                   )
+
+
+class CourseSerializer(serializers.ModelSerializer):
+    
+    lessons_detail = LessonSerializer(read_only=True, many=True, source='lessons')
+    lessons = serializers.SerializerMethodField(read_only=True)
+    
+    class Meta:
+        model = Course
+        fields = ('pk',
+                  'course_name',
+                  'course_preview',
+                  'description',
+                  'lessons',
+                  'lessons_detail',
+                  )
+        
+    def get_lessons(self, instance):
+        return instance.lessons.get_queryset().count()
+        
         

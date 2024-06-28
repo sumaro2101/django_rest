@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.contrib.auth import get_user_model
 
 from phonenumber_field.modelfields import PhoneNumberField
 
@@ -26,3 +27,43 @@ class User(AbstractUser):
                                null=True,
                                verbose_name='аватар'
                                )
+
+
+class Payments(models.Model):
+    """Модель платежей
+    """
+    user = models.ForeignKey(get_user_model(),
+                             verbose_name='пользователь',
+                             on_delete=models.DO_NOTHING,
+                             )
+    
+    date_of_pay = models.DateTimeField(auto_now_add=True,
+                                       verbose_name='Дата платежа',
+                                       )
+    
+    pay_course = models.ForeignKey("courses.Course",
+                                   verbose_name='платеж курса',
+                                   blank=True,
+                                   null=True,
+                                   on_delete=models.DO_NOTHING,
+                                   )
+    
+    pay_lesson = models.ForeignKey("courses.Lesson",
+                                   verbose_name='платеж урока',
+                                   blank=True,
+                                   null=True,
+                                   on_delete=models.DO_NOTHING,
+                                   )
+    
+    payment_amount = models.PositiveIntegerField(verbose_name='сумма оплаты',
+                                                 editable=False,
+                                                 )
+    
+    payment_method = models.CharField(max_length=50,
+                                      verbose_name='способ оплаты',
+                                      choices=(
+                                          ('cash', 'наличные'),
+                                          ('modey_transfer', 'перевод денег'),
+                                      ),
+                                      )
+    

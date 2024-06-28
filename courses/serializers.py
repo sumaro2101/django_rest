@@ -33,4 +33,3 @@ class CourseSerializer(serializers.ModelSerializer):
     def get_lessons(self, instance):
         return instance.lessons.get_queryset().count()
         
-        

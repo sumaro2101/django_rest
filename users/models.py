@@ -70,3 +70,6 @@ class Payments(models.Model):
                                       ),
                                       )
     
+    class Meta:
+        ordering = ('-date_of_pay',)
+    

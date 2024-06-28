@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.utils.translation import gettext_lazy as _
 
-from users.models import User
+from users.models import User, Payments
 # Register your models here.
 
 
@@ -57,3 +57,8 @@ class UserAdmin(UserAdmin):
             },
         ),
     )
+    
+@admin.register(Payments)
+class PaymentsAdmin(admin.ModelAdmin):
+    list_display = ('user', 'date_of_pay', 'pay_course', 'pay_lesson', 'payment_amount', 'payment_method', )
+    

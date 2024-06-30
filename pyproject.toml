@@ -15,6 +15,7 @@ python-dotenv = "^1.0.1"
 django-phonenumber-field = "^8.0.0"
 phonenumbers = "^8.13.39"
 django-filter = "^24.2"
+djangorestframework-simplejwt = "^5.3.1"
 
 
 [build-system]

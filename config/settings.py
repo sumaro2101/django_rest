@@ -47,6 +47,9 @@ INSTALLED_APPS = [
     # djangorestframework
     'rest_framework',
     
+    #djangorestframework-simplejwt
+    'rest_framework_simplejwt',
+    
     #phonenumber_field
     'phonenumber_field',
     
@@ -91,6 +94,12 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': (
         'django_filters.rest_framework.DjangoFilterBackend',
     ),
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
 }
 
 WSGI_APPLICATION = 'config.wsgi.application'

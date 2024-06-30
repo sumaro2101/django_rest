@@ -68,6 +68,7 @@ class UserCreateSerializer(serializers.ModelSerializer):
         
         password = validated_data.get('password')
         password_check = validated_data.pop('password_check')
+        
         if password and password_check and password != password_check:
             raise ValidationError(
                 'Пароли не совпадают'

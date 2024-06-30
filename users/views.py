@@ -9,7 +9,7 @@ from django.contrib.auth import get_user_model, password_validation
 
 from users.serializers import UserSerializers, PaymentsSerializers, UserCreateSerializer
 from users.models import Payments
-from users.permissions import IsCurrentUser
+from users.permissions import IsCurrentUser, IsSuperUser
 # Create your views here.
 
 class ViewUserAPI(generics.RetrieveAPIView):
@@ -31,7 +31,7 @@ class ViewUserAPI(generics.RetrieveAPIView):
 class UpdateDestroyUser(mixins.DestroyModelMixin, generics.UpdateAPIView):
     queryset = get_user_model().objects.get_queryset()
     serializer_class = UserSerializers
-    permission_classes = [permissions.IsAuthenticated & permissions.IsAdminUser |
+    permission_classes = [permissions.IsAuthenticated & IsSuperUser |
                           permissions.IsAuthenticated & IsCurrentUser]
     
     def delete(self, request, *args, **kwargs):

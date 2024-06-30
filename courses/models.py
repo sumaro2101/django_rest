@@ -1,10 +1,18 @@
 from django.db import models
+from django.contrib.auth import get_user_model
 
 # Create your models here.
 
 class Course(models.Model):
     """Модель курса
-    """    
+    """  
+    owner = models.ForeignKey(get_user_model(),
+                              verbose_name='владелец',
+                              on_delete=models.CASCADE,
+                              null=True,
+                              blank=True,
+                              )
+    
     course_name = models.CharField(max_length=200,
                                    verbose_name='имя курса'
                                    )
@@ -29,7 +37,14 @@ class Course(models.Model):
 
 class Lesson(models.Model):
     """Модель урока для курса
-    """    
+    """
+    owner = models.ForeignKey(get_user_model(),
+                              verbose_name='владелец',
+                              on_delete=models.CASCADE,
+                              null=True,
+                              blank=True,
+                              )
+     
     course = models.ForeignKey("courses.Course",
                                verbose_name="курс",
                                on_delete=models.CASCADE,

@@ -13,6 +13,6 @@ router.register(r'api/course', CourseViewSet, basename='api/course')
 urlpatterns = [
     path('', include(router.urls)),
     path('api/lesson/', LessonList.as_view(), name='lesson_list'),
-    path('api/lesson/<int:pk>', LessonDetail.as_view(), name='lesson_detail'),
+    path('api/lesson/<int:pk>/', LessonDetail.as_view(), name='lesson_detail'),
 ]
 

@@ -1,6 +1,9 @@
 import traceback
+from typing import Dict, Union
 from rest_framework import serializers
+
 from django.contrib.auth import get_user_model
+from django.db.models import Model
 
 from users.models import Payments
 from users.validators import ValidatorOneValueInput, ValidatorSetPasswordUser
@@ -56,13 +59,9 @@ class UserCreateSerializer(serializers.ModelSerializer):
                   )
         validators = [ValidatorSetPasswordUser(['password', 'password_check'])]
         
-    def create(self, validated_data):
-        
-        ModelClass = self.Meta.model
-        password = validated_data.pop('password_check')
-                
+    def _create_user(self, model: Model, password: str, validated_data: Dict) -> Union[get_user_model, None]:
         try:
-            instance = ModelClass._default_manager.create(**validated_data)
+            instance = model._default_manager.create(**validated_data)
             instance.set_password(password)
             instance.save(update_fields=['password'])
         except TypeError:
@@ -75,10 +74,10 @@ class UserCreateSerializer(serializers.ModelSerializer):
                 'read-only, or override the %s.create() method to handle '
                 'this correctly.\nOriginal exception was:\n %s' %
                 (
-                    ModelClass.__name__,
-                    ModelClass._default_manager.name,
-                    ModelClass.__name__,
-                    ModelClass._default_manager.name,
+                    model.__name__,
+                    model._default_manager.name,
+                    model.__name__,
+                    model._default_manager.name,
                     self.__class__.__name__,
                     tb
                 )
@@ -86,4 +85,11 @@ class UserCreateSerializer(serializers.ModelSerializer):
             raise TypeError(msg)
             
         return instance
-    
+        
+    def create(self, validated_data):
+        
+        ModelClass = self.Meta.model
+        password = validated_data.pop('password_check')
+        
+        return self._create_user(ModelClass, password, validated_data)
+        

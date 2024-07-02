@@ -1,11 +1,9 @@
 import traceback
-from django.forms import ValidationError
 from rest_framework import serializers
-from django.contrib.auth import get_user_model, password_validation
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import get_user_model
 
 from users.models import Payments
-from users.validators import ValidatorSetPasswordUser
+from users.validators import ValidatorOneValueInput, ValidatorSetPasswordUser
 
 
 class PaymentsSerializers(serializers.ModelSerializer):
@@ -19,17 +17,7 @@ class PaymentsSerializers(serializers.ModelSerializer):
                   'payment_amount',
                   'payment_method',
                   )
-    
-    def create(self, validated_data):
-        pay_course = validated_data.get('pay_course')
-        pay_lesson = validated_data.get('pay_lesson')
-        
-        if pay_course and pay_lesson:
-            raise ValueError('pay_course и pay_lesson не могут быть опеределенны вместе')
-        if not pay_course and not pay_lesson:
-            raise ValueError('Нужно опередить одно из полей (pay_course, pay_lesson)')
-        
-        return super().create(validated_data)
+        validators = [ValidatorOneValueInput(['pay_course', 'pay_lesson'])]
     
 
 class UserSerializers(serializers.ModelSerializer):
@@ -53,6 +41,7 @@ class UserSerializers(serializers.ModelSerializer):
 class UserCreateSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(required=True)
     password_check = serializers.CharField(write_only=True, required=True)
+    
     
     class Meta:
         model = get_user_model()

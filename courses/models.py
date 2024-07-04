@@ -75,3 +75,23 @@ class Lesson(models.Model):
 
     def __str__(self):
         return self.lesson_name
+
+
+class Subscribe(models.Model):
+    """Модель подписки для курсов
+    """    
+    course = models.ForeignKey("courses.Course",
+                               verbose_name='курс',
+                               on_delete=models.CASCADE,
+                               )
+    
+    user = models.ForeignKey(get_user_model(),
+                             verbose_name='пользователь',
+                             on_delete=models.CASCADE,
+                             )
+    
+    
+    class Meta:
+        verbose_name = 'подписка'
+        verbose_name_plural = 'подписки'
+        

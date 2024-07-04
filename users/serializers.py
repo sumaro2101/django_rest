@@ -45,7 +45,6 @@ class UserCreateSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(required=True)
     password_check = serializers.CharField(write_only=True, required=True)
     
-    
     class Meta:
         model = get_user_model()
         fields = ('username',
@@ -85,7 +84,7 @@ class UserCreateSerializer(serializers.ModelSerializer):
             raise TypeError(msg)
             
         return instance
-        
+    
     def create(self, validated_data):
         
         ModelClass = self.Meta.model

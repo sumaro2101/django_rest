@@ -66,12 +66,7 @@ class Lesson(models.Model):
                                        upload_to='courses/lessons/%Y/%m/%d/'
                                     )
     
-    video_link = models.FileField(verbose_name='ссылка на видео',
-                                         upload_to='courses/videos/%Y/%m/%d/',
-                                         max_length=256,
-                                         blank=True,
-                                         null=True,
-                                         )
+    video_link = models.CharField(max_length=256, verbose_name='ссылка на видео урок')
     
 
     class Meta:

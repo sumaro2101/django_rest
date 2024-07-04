@@ -1,5 +1,7 @@
 from rest_framework import serializers
+
 from courses.models import Course, Lesson
+from courses.validators import ValidateOnlyYoutubeLink
 
 class LessonSerializer(serializers.ModelSerializer):
     
@@ -13,6 +15,7 @@ class LessonSerializer(serializers.ModelSerializer):
                   'lesson_preview',
                   'video_link',
                   )
+        validators = [ValidateOnlyYoutubeLink(link='video_link')]
 
 
 class CourseSerializer(serializers.ModelSerializer):

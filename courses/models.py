@@ -82,6 +82,7 @@ class Subscribe(models.Model):
     """    
     course = models.ForeignKey("courses.Course",
                                verbose_name='курс',
+                               related_name='subscribe',
                                on_delete=models.CASCADE,
                                )
     

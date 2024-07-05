@@ -1,7 +1,8 @@
 from rest_framework import serializers
 
-from courses.models import Course, Lesson
+from courses.models import Course, Lesson, Subscribe
 from courses.validators import ValidateOnlyYoutubeLink
+
 
 class LessonSerializer(serializers.ModelSerializer):
     
@@ -23,6 +24,7 @@ class CourseSerializer(serializers.ModelSerializer):
     lessons_detail = LessonSerializer(read_only=True, many=True, source='lessons')
     lessons = serializers.SerializerMethodField(read_only=True)
     
+    
     class Meta:
         model = Course
         fields = ('pk',
@@ -35,4 +37,12 @@ class CourseSerializer(serializers.ModelSerializer):
         
     def get_lessons(self, instance):
         return instance.lessons.get_queryset().count()
+        
+
+class SubscribeSerializer(serializers.ModelSerializer):
+    
+    
+    class Meta:
+        model = Subscribe
+        fields = ('course',)
         

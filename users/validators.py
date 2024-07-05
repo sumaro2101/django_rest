@@ -51,7 +51,7 @@ class ValidatorOneValueInput:
         if not isinstance(fields, list):
             raise TypeError('Поле "fields" должно было List')
         if len(fields) != 2:
-            raise KeyError('Неоходимо указать два пароля для сравнения')
+            raise KeyError('Неоходимо указать два значения для проверки')
         for field in fields:
              if not isinstance(field, str):
                 raise TypeError('Аргумент "field" может быть только строкой')

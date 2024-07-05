@@ -7,7 +7,7 @@ from django.db.models import Q
 from courses.models import Course, Lesson, Subscribe
 from courses.serializers import CourseSerializer, LessonSerializer, SubscribeSerializer
 from courses.permissions import IsSuperUser, IsModerator, IsCurrentUser
-from courses.paginations import PaginateCourses, PaginateLessons
+from courses.paginators import PaginateCourses, PaginateLessons
 
 # Create your views here.
 

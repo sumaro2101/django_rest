@@ -2,7 +2,7 @@ from rest_framework.validators import ValidationError
 
 from courses.regexp import check_youtube_string
 
-from typing import Any, Union
+from typing import Any, Union, List
 
 
 class ValidateOnlyYoutubeLink:
@@ -12,7 +12,7 @@ class ValidateOnlyYoutubeLink:
             raise TypeError('Поле ссылки на видео может быть только str типом')
         self.link = link
         
-    def _is_youtube(self, value: str) -> Union[None, ValidationError]:
+    def _is_youtube(self, value: List[str]) -> Union[None, ValidationError]:
         """Проверяет принадлежность ссылки к Youtube видео-хостингу
 
         Args:

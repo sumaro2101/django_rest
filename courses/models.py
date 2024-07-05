@@ -22,6 +22,18 @@ class Course(models.Model):
                                null=True,
                                )
     
+    time_create = models.DateTimeField(auto_now_add=True,
+                                       verbose_name='дата создания',
+                                       blank=True,
+                                       null=True,
+                                       )
+    
+    time_update = models.DateTimeField(auto_now=True,
+                                       verbose_name='дата изменения',
+                                       blank=True,
+                                       null=True,
+                                       )
+    
     description = models.TextField(blank=True,
                                    null=True,
                                     )
@@ -30,6 +42,7 @@ class Course(models.Model):
     class Meta:
         verbose_name = ("курс")
         verbose_name_plural = ("курсы")
+        ordering = ['-time_update']
 
     def __str__(self):
         return self.course_name
@@ -60,6 +73,18 @@ class Lesson(models.Model):
                                    null=True,
                                    )
     
+    time_create = models.DateTimeField(auto_now_add=True,
+                                       verbose_name='дата создания',
+                                       blank=True,
+                                       null=True,
+                                       )
+    
+    time_update = models.DateTimeField(auto_now=True,
+                                       verbose_name='дата изменения',
+                                       blank=True,
+                                       null=True,
+                                       )
+    
     lesson_preview = models.ImageField(verbose_name='картинка',
                                        blank=True,
                                        null=True,
@@ -72,6 +97,7 @@ class Lesson(models.Model):
     class Meta:
         verbose_name = 'урок'
         verbose_name_plural = 'уроки'
+        ordering = ['-time_update']
 
     def __str__(self):
         return self.lesson_name

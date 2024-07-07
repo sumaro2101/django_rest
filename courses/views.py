@@ -12,9 +12,16 @@ from courses.paginators import PaginateCourses, PaginateLessons
 # Create your views here.
 
 class CourseViewSet(viewsets.ModelViewSet):
+    """Создание, изменение, просмотр, удаление курса.
+    Если не администратор и не владелец курса тогда
+    возможно только просматривать
+    """    
     queryset = Course.objects.get_queryset()
     serializer_class = CourseSerializer
     pagination_class = PaginateCourses
+    
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
     
     def get_permissions(self):
         if self.action == 'create':
@@ -36,9 +43,14 @@ class CourseViewSet(viewsets.ModelViewSet):
 
 
 class LessonList(generics.ListCreateAPIView):
+    """Создание и просмотр списка уроков курса
+    """    
     queryset = Lesson.objects.get_queryset()
     serializer_class = LessonSerializer
     pagination_class = PaginateLessons
+    
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
     
     def get_permissions(self):
         
@@ -52,6 +64,9 @@ class LessonList(generics.ListCreateAPIView):
     
     
 class LessonDetail(generics.RetrieveUpdateDestroyAPIView):
+    """Просмотр, изменение, удаление урока.
+    Если не админ и не владелец возможен только просмотр
+    """    
     queryset = Lesson.objects.get_queryset()
     serializer_class = LessonSerializer
     
@@ -70,6 +85,8 @@ class LessonDetail(generics.RetrieveUpdateDestroyAPIView):
     
 
 class SubscribeAPIToggle(generics.GenericAPIView):
+    """Подписка-отписка курса
+    """    
     queryset = Subscribe.objects.get_queryset()
     serializer_class = SubscribeSerializer
     

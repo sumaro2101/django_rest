@@ -15,6 +15,7 @@ from users.permissions import IsCurrentUser, IsSuperUser
 class ViewUserAPI(generics.RetrieveAPIView):
     queryset = get_user_model().objects.get_queryset()
     serializer_class = UserSerializers
+    swagger_schema = None
     
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -29,6 +30,9 @@ class ViewUserAPI(generics.RetrieveAPIView):
     
     
 class UpdateDestroyUser(mixins.DestroyModelMixin, generics.UpdateAPIView):
+    """API обновления личного кабинета, если аунтефицированный пользователь
+    не является администратором он может менять или удалять только свои данные
+    """    
     queryset = get_user_model().objects.get_queryset()
     serializer_class = UserSerializers
     permission_classes = [permissions.IsAuthenticated & IsSuperUser |
@@ -43,6 +47,9 @@ class UpdateDestroyUser(mixins.DestroyModelMixin, generics.UpdateAPIView):
 
 
 class UserViewCreate(generics.CreateAPIView):
+    """API создания и просмотра пользователя
+    Если просмотр пользователя не является личным тогда исключаются личные данные
+    """    
     queryset = get_user_model().objects.get_queryset()
     serializer_class = UserCreateSerializer
     permission_classes = [permissions.AllowAny]
@@ -56,3 +63,4 @@ class PaymentsListAPIView(generics.ListCreateAPIView):
                        )
     filterset_fields = ('pay_course', 'pay_lesson', 'payment_method')
     ordering_fields = ('date_of_pay',)
+    swagger_schema = None

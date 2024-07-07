@@ -24,7 +24,7 @@ class PaymentsSerializers(serializers.ModelSerializer):
     
 
 class UserSerializers(serializers.ModelSerializer):
-    payments_info = PaymentsSerializers(many=True, read_only=True, source='payments')
+    payments_info = PaymentsSerializers(many=True, read_only=True, source='payments', help_text='Информация о платежах текущего пользователя')
     
     class Meta:
         model = get_user_model()
@@ -39,10 +39,14 @@ class UserSerializers(serializers.ModelSerializer):
                   'avatar',
                   'payments_info',
                   )
+        extra_kwargs = {'email': {'help_text': 'Электронная почта пользователя'},
+                        'first_name': {'help_text': 'Имя пользователя, не более 150 символов'},
+                        'last_name': {'help_text': 'Фамилия пользователя, не более 150 символов'},
+                        }
+
 
         
 class UserCreateSerializer(serializers.ModelSerializer):
-    email = serializers.EmailField(required=True)
     password_check = serializers.CharField(write_only=True, required=True)
     
     class Meta:
@@ -56,6 +60,10 @@ class UserCreateSerializer(serializers.ModelSerializer):
                   'password',
                   'password_check',
                   )
+        extra_kwargs = {'email': {'help_text': 'Электронная почта пользователя', 'required': True},
+                        'first_name': {'help_text': 'Имя пользователя, не более 150 символов'},
+                        'last_name': {'help_text': 'Фамилия пользователя, не более 150 символов'},
+                        }
         validators = [ValidatorSetPasswordUser(['password', 'password_check'])]
         
     def _create_user(self, model: Model, password: str, validated_data: Dict) -> Union[get_user_model, None]:

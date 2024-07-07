@@ -14,18 +14,21 @@ class User(AbstractUser):
                              blank=True,
                              verbose_name='номер телефона',
                              unique=True,
+                             help_text='Номер телефона пример "+7(913)0000000"',
                              )
     
     city = models.CharField(max_length=150,
                             blank=True,
                             null=True,
-                            verbose_name='город'
+                            verbose_name='город',
+                            help_text='Город проживания пользователя',
                             )
     
     avatar = models.ImageField(upload_to='users/',
                                blank=True,
                                null=True,
-                               verbose_name='аватар'
+                               verbose_name='аватар',
+                               help_text='Аватар пользователя',
                                )
 
 
@@ -35,11 +38,13 @@ class Payments(models.Model):
     user = models.ForeignKey(get_user_model(),
                              verbose_name='пользователь',
                              on_delete=models.DO_NOTHING,
-                             related_name='payments'
+                             related_name='payments',
+                             help_text='Владелец платежа',
                              )
     
     date_of_pay = models.DateTimeField(auto_now_add=True,
                                        verbose_name='Дата платежа',
+                                       help_text='Дата платежа',
                                        )
     
     pay_course = models.ForeignKey("courses.Course",
@@ -48,6 +53,7 @@ class Payments(models.Model):
                                    null=True,
                                    default=None,
                                    on_delete=models.DO_NOTHING,
+                                   help_text='Платеж за курс, возможно выбрать либо курс либо урок',
                                    )
     
     pay_lesson = models.ForeignKey("courses.Lesson",
@@ -56,11 +62,13 @@ class Payments(models.Model):
                                    null=True,
                                    default=None,
                                    on_delete=models.DO_NOTHING,
+                                   help_text='Платеж за урок, возможно выбрать либо курс либо урок',
                                    )
     
     payment_amount = models.DecimalField(verbose_name='сумма оплаты',
                                         max_digits=10,
                                         decimal_places=2,
+                                        help_text='Сумма оплаты, максимум 8 значное число',
                                         )
     
     payment_method = models.CharField(max_length=50,
@@ -69,6 +77,7 @@ class Payments(models.Model):
                                           ('cash', 'наличные'),
                                           ('money_transfer', 'перевод денег'),
                                       ),
+                                      help_text='Способ оплаты, либо наличные либо денежный перевод',
                                       )
     
     class Meta:

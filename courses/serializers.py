@@ -68,3 +68,20 @@ class SubscribeSerializer(serializers.ModelSerializer):
         model = Subscribe
         fields = ('course',)
         
+        
+class LinkPaymentSerializer(serializers.Serializer):
+    url = serializers.URLField()
+
+
+class StripeSessionSerializer(serializers.Serializer):
+    id = serializers.CharField(read_only=True, help_text='ID сессии StrypeSession')
+    amount_total = serializers.DecimalField(max_digits=12, decimal_places=0, read_only=True, help_text='Общая сумма оплаты, сумма считается в копейках например: 50000 -> 500.00 RUB')
+    automatic_tax = serializers.BooleanField(read_only=True, help_text='Взымание налога')
+    currency = serializers.CharField(read_only=True, help_text='Курс валюты')
+    user_email = serializers.EmailField(read_only=True, help_text='Электронный адресс покупателя')
+    user_name = serializers.CharField(read_only=True, help_text='Имя покупатебя')
+    phone = serializers.CharField(read_only=True, help_text='Телефон покупателя')
+    payment_intent = serializers.CharField(read_only=True, help_text='Id оплаты')
+    url = serializers.URLField(read_only=True, help_text='Ссылка на оплату')
+    status = serializers.CharField(read_only=True, help_text='Статус оплаты')
+    

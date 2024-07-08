@@ -42,6 +42,14 @@ class Payments(models.Model):
                              help_text='Владелец платежа',
                              )
     
+    id_session = models.CharField(max_length=256,
+                                  verbose_name='Id сессии',
+                                  help_text='ID сессии установленная сервисом Stripe',
+                                  blank=True,
+                                  null=True,
+                                  default=None,
+                                  )
+    
     date_of_pay = models.DateTimeField(auto_now_add=True,
                                        verbose_name='Дата платежа',
                                        help_text='Дата платежа',
@@ -66,8 +74,8 @@ class Payments(models.Model):
                                    )
     
     payment_amount = models.DecimalField(verbose_name='сумма оплаты',
-                                        max_digits=10,
-                                        decimal_places=2,
+                                        max_digits=12,
+                                        decimal_places=0,
                                         help_text='Сумма оплаты, максимум 8 значное число',
                                         )
     
@@ -79,6 +87,7 @@ class Payments(models.Model):
                                       ),
                                       help_text='Способ оплаты, либо наличные либо денежный перевод',
                                       )
+
     
     class Meta:
         ordering = ('-date_of_pay',)

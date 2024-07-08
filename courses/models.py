@@ -22,8 +22,14 @@ class Course(models.Model):
     course_preview = models.ImageField(upload_to='courses/course/%Y/%m/%d/',
                                blank=True,
                                null=True,
-                               help_text='Изображение характерезуещее курс',
+                               help_text='Изображение характеризующее курс',
                                )
+    
+    amount = models.DecimalField(verbose_name='стоимость',
+                                max_digits=12,
+                                decimal_places=0,
+                                help_text='Стоимость курса, максимум 8 значное число',
+                                )
     
     time_create = models.DateTimeField(auto_now_add=True,
                                        verbose_name='дата создания',
@@ -76,6 +82,12 @@ class Lesson(models.Model):
                                    max_length=200,
                                    help_text='Название урока, не более 200 символов',
                                    )
+    
+    amount = models.DecimalField(verbose_name='стоимость',
+                                max_digits=12,
+                                decimal_places=0,
+                                help_text='Стоимость урока, максимум 8 значное число',
+                                )
     
     description = models.TextField(verbose_name='описание',
                                    blank=True,

@@ -44,7 +44,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     
-    # djangorestframework
+    #drf-yasg
+    'drf_yasg',
+    
+    #djangorestframework
     'rest_framework',
     
     #djangorestframework-simplejwt
@@ -89,6 +92,15 @@ TEMPLATES = [
         },
     },
 ]
+
+
+#Documentation Swagger
+
+SWAGGER_SETTINGS = {
+    'VALIDATOR_URL': 'http://127.0.0.1:8000'
+}
+
+#DRF
 
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',

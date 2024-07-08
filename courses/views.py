@@ -117,7 +117,7 @@ class LinkPaymentCourseGetView(generics.GenericAPIView):
     
     def post(self, *args, **kwargs):
         course = get_object_or_404(Course, pk=kwargs['pk'])
-        session = SessionLinkPayment(course)
+        session = SessionLinkPayment(self.request, course)
         check_out = session.get_checkout_session()
         data = {
             'url': check_out.url

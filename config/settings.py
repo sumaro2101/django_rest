@@ -127,8 +127,8 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 #Email settings
 
-#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 YANDEX_MAIL = yandex_mail()
 EMAIL_HOST = YANDEX_MAIL.get('host')
@@ -143,15 +143,6 @@ DEFAULT_CHARSET = 'utf-8'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 SERVER_EMAIL = EMAIL_HOST_USER
 EMAIL_ADMIN = EMAIL_HOST_USER
-
-
-#Celery
-
-CELERY_BROKER_URL = find_env('BROKER_URL')
-CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379'
-CELERY_RESULT_EXTENDED = True
-CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
-CELERY_BEAT_SCHEDULER = find_env('DEFAULT_DATABASE_BEAT')
 
 
 # Database
@@ -200,12 +191,22 @@ AUTH_USER_MODEL = 'users.User'
 
 LANGUAGE_CODE = 'ru'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Omsk'
 
 USE_I18N = True
 
 USE_TZ = True
 
+
+#Celery
+
+CELERY_BROKER_URL = find_env('BROKER_URL')
+CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379'
+CELERY_TIMEZONE = TIME_ZONE
+CELERY_RESULT_EXTENDED = True
+CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
+CELERY_TASK_TIME_LIMIT = 30 * 60
+CELERY_BEAT_SCHEDULER = find_env('DEFAULT_DATABASE_BEAT')
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/

@@ -2,9 +2,13 @@ from rest_framework import serializers
 from rest_framework.validators import ValidationError
 
 from django.db.models import Q
+from django.utils import timezone
+
+import datetime
 
 from courses.models import Course, Lesson, Subscribe
 from courses.validators import ValidateOnlyYoutubeLink
+from courses.tasks import send
 
 
 class LessonSerializer(serializers.ModelSerializer):
@@ -30,6 +34,18 @@ class LessonSerializer(serializers.ModelSerializer):
             raise ValidationError('Добавлять уроки может только владелец данного курса')
         return super().create(validated_data)
     
+    def update(self, instance, validated_data):
+        time_four_hour_before = timezone.now() - datetime.timedelta(hours=4)
+        if not instance.course.time_update > time_four_hour_before:
+            course = instance.course
+            instance = super().update(instance, validated_data)
+            course.time_update = timezone.now()
+            course.save(update_fields=['time_update'])
+            send(course.id)
+            return instance
+        else:
+            return super().update(instance, validated_data)
+    
 
 class CourseSerializer(serializers.ModelSerializer):
     
@@ -49,6 +65,15 @@ class CourseSerializer(serializers.ModelSerializer):
                   'lessons',
                   'lessons_detail',
                   )
+        
+    def update(self, instance, validated_data):
+        time_four_hour_before = timezone.now() - datetime.timedelta(hours=4)
+        if not instance.time_update > time_four_hour_before:
+            instance = super().update(instance, validated_data)
+            send.delay(instance.id)
+            return instance
+        else:
+            return super().update(instance, validated_data)
         
     def get_lessons(self, instance):
         """Поле которое показывает количество уроков у данного курса

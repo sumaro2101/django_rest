@@ -10,9 +10,11 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
+import os
 from pathlib import Path
 from dotenv import load_dotenv
 
+from config.config_parse import yandex_mail
 from config.utils import find_env
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -59,6 +61,9 @@ INSTALLED_APPS = [
     #django-filters
     'django_filters',
     
+    #django-celery-beat
+    'django_celery_beat',
+    
     #custom apps
     'users.apps.UsersConfig',
     'courses.apps.CoursesConfig',
@@ -100,6 +105,7 @@ SWAGGER_SETTINGS = {
     'VALIDATOR_URL': 'http://127.0.0.1:8000'
 }
 
+
 #DRF
 
 REST_FRAMEWORK = {
@@ -117,6 +123,26 @@ REST_FRAMEWORK = {
 }
 
 WSGI_APPLICATION = 'config.wsgi.application'
+
+
+#Email settings
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+YANDEX_MAIL = yandex_mail()
+EMAIL_HOST = YANDEX_MAIL.get('host')
+EMAIL_PORT = YANDEX_MAIL.get('port')
+EMAIL_HOST_USER = YANDEX_MAIL.get('hostuser')
+EMAIL_HOST_PASSWORD = os.environ.get('PASSWORD_HOST_YANDEX')
+EMAIL_USE_SSL = True if YANDEX_MAIL.get('connecttype') == 'SSL' else False
+EMAIL_USE_TLS = True if YANDEX_MAIL.get('connecttype') == 'TLS' else False
+
+DEFAULT_CHARSET = 'utf-8'
+
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+SERVER_EMAIL = EMAIL_HOST_USER
+EMAIL_ADMIN = EMAIL_HOST_USER
 
 
 # Database
@@ -153,18 +179,34 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTHENTICATION_BACKENDS = [
+    'users.authentication.EmailAuthBackend',
+]
+
+AUTH_USER_MODEL = 'users.User'
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
 LANGUAGE_CODE = 'ru'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Omsk'
 
 USE_I18N = True
 
 USE_TZ = True
 
+
+#Celery
+
+CELERY_BROKER_URL = find_env('BROKER_URL')
+CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379'
+CELERY_TIMEZONE = TIME_ZONE
+CELERY_RESULT_EXTENDED = True
+CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
+CELERY_TASK_TIME_LIMIT = 30 * 60
+CELERY_BEAT_SCHEDULER = find_env('DEFAULT_DATABASE_BEAT')
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
@@ -179,9 +221,3 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-AUTHENTICATION_BACKENDS = [
-    'users.authentication.EmailAuthBackend',
-]
-
-AUTH_USER_MODEL = 'users.User'

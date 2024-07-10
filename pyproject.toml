@@ -11,6 +11,18 @@ django = "^5.0.6"
 pillow = "^10.3.0"
 psycopg2-binary = "^2.9.9"
 djangorestframework = "^3.15.2"
+python-dotenv = "^1.0.1"
+django-phonenumber-field = "^8.0.0"
+phonenumbers = "^8.13.39"
+django-filter = "^24.2"
+djangorestframework-simplejwt = "^5.3.1"
+coverage = "^7.5.4"
+drf-yasg = "^1.21.7"
+stripe = "^10.2.0"
+celery = "^5.4.0"
+python-crontab = "^3.2.0"
+django-celery-beat = "^2.6.0"
+redis = "^5.0.7"
 
 
 [build-system]

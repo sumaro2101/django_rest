@@ -10,17 +10,25 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
+import os
 from pathlib import Path
+from dotenv import load_dotenv
+
+from config.config_parse import yandex_mail
+from config.utils import find_env
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+ENV_DIR = Path(__file__).resolve() / '.env'
+
+load_dotenv(ENV_DIR)
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-05)sopmygf#7e0slcq9ipitwbgmtm44oms&=xt=8b5ds3vcl7g'
+SECRET_KEY = find_env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -37,6 +45,29 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    
+    #drf-yasg
+    'drf_yasg',
+    
+    #djangorestframework
+    'rest_framework',
+    
+    #djangorestframework-simplejwt
+    'rest_framework_simplejwt',
+    
+    #phonenumber_field
+    'phonenumber_field',
+    
+    #django-filters
+    'django_filters',
+    
+    #django-celery-beat
+    'django_celery_beat',
+    
+    #custom apps
+    'users.apps.UsersConfig',
+    'courses.apps.CoursesConfig',
+    
 ]
 
 MIDDLEWARE = [
@@ -67,7 +98,51 @@ TEMPLATES = [
     },
 ]
 
+
+#Documentation Swagger
+
+SWAGGER_SETTINGS = {
+    'VALIDATOR_URL': 'http://127.0.0.1:8000'
+}
+
+
+#DRF
+
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 20,
+    'DEFAULT_FILTER_BACKENDS': (
+        'django_filters.rest_framework.DjangoFilterBackend',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+}
+
 WSGI_APPLICATION = 'config.wsgi.application'
+
+
+#Email settings
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+YANDEX_MAIL = yandex_mail()
+EMAIL_HOST = YANDEX_MAIL.get('host')
+EMAIL_PORT = YANDEX_MAIL.get('port')
+EMAIL_HOST_USER = YANDEX_MAIL.get('hostuser')
+EMAIL_HOST_PASSWORD = os.environ.get('PASSWORD_HOST_YANDEX')
+EMAIL_USE_SSL = True if YANDEX_MAIL.get('connecttype') == 'SSL' else False
+EMAIL_USE_TLS = True if YANDEX_MAIL.get('connecttype') == 'TLS' else False
+
+DEFAULT_CHARSET = 'utf-8'
+
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+SERVER_EMAIL = EMAIL_HOST_USER
+EMAIL_ADMIN = EMAIL_HOST_USER
 
 
 # Database
@@ -75,8 +150,13 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': find_env('DB_NAME'),
+        'USER': find_env('DB_USER'),
+        'HOST': find_env('DB_HOST'),
+        'PORT': find_env('DB_PORT'),
+        'PASSWORD': find_env('PASSWORD_POSTGRES'),
+        
     }
 }
 
@@ -99,23 +179,43 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTHENTICATION_BACKENDS = [
+    'users.authentication.EmailAuthBackend',
+]
+
+AUTH_USER_MODEL = 'users.User'
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Omsk'
 
 USE_I18N = True
 
 USE_TZ = True
 
 
+#Celery
+
+CELERY_BROKER_URL = find_env('BROKER_URL')
+CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379'
+CELERY_TIMEZONE = TIME_ZONE
+CELERY_RESULT_EXTENDED = True
+CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
+CELERY_TASK_TIME_LIMIT = 30 * 60
+CELERY_BEAT_SCHEDULER = find_env('DEFAULT_DATABASE_BEAT')
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = 'static/'
+STATICFILES_DIRS = [ BASE_DIR / 'static/' ]
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field

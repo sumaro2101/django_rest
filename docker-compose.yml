@@ -1,0 +1,48 @@
+services:
+  courses:
+    build: 
+      context: .
+    ports:
+      - '8000:8000'
+    volumes:
+      - .:/courses
+    env_file:
+      - .env
+
+    command: >
+      sh -c 'python manage.py runserver 0.0.0.0:8000'
+
+    depends_on:
+      - postgresql
+      - redis
+
+  postgresql:
+    image: postgres:16.3-alpine3.20
+
+    env_file:
+      - .env
+      
+    hostname: postgresql
+
+  redis:
+    image: redis:7.2.5-alpine3.20
+    hostname: redis
+    depends_on:
+      - postgresql
+
+  celery:
+    build: 
+      context: .
+    volumes:
+      - .:/courses
+    env_file:
+      - .env
+
+    hostname: celery
+    entrypoint: celery
+    command: -A config.celery.app worker --loglevel=info
+    links:
+      - redis
+    depends_on:
+      - courses
+      - redis

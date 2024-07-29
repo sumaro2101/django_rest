@@ -19,9 +19,6 @@ from config.utils import find_env
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-ENV_DIR = Path(__file__).resolve() / '.env'
-
-load_dotenv(ENV_DIR)
 
 
 # Quick-start development settings - unsuitable for production
@@ -45,29 +42,21 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
-    #drf-yasg
+    # drf-yasg
     'drf_yasg',
-    
-    #djangorestframework
+    # djangorestframework
     'rest_framework',
-    
-    #djangorestframework-simplejwt
+    # djangorestframework-simplejwt
     'rest_framework_simplejwt',
-    
-    #phonenumber_field
+    # phonenumber_field
     'phonenumber_field',
-    
-    #django-filters
+    # django-filters
     'django_filters',
-    
-    #django-celery-beat
+    # django-celery-beat
     'django_celery_beat',
-    
-    #custom apps
+    # custom apps
     'users.apps.UsersConfig',
     'courses.apps.CoursesConfig',
-    
 ]
 
 MIDDLEWARE = [
@@ -102,7 +91,7 @@ TEMPLATES = [
 #Documentation Swagger
 
 SWAGGER_SETTINGS = {
-    'VALIDATOR_URL': 'http://127.0.0.1:8000'
+    'VALIDATOR_URL': 'http://127.0.0.1:8000',
 }
 
 
@@ -153,9 +142,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': find_env('DB_NAME'),
         'USER': find_env('DB_USER'),
-        'HOST': find_env('DB_HOST'),
-        'PORT': find_env('DB_PORT'),
-        'PASSWORD': find_env('PASSWORD_POSTGRES'),
+        'HOST': 'postgresql',
+        'PASSWORD': find_env('DB_PASSWORD'),
         
     }
 }
@@ -200,8 +188,8 @@ USE_TZ = True
 
 #Celery
 
-CELERY_BROKER_URL = find_env('BROKER_URL')
-CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379'
+CELERY_BROKER_URL = find_env('CELERY_BROKER_URL')
+CELERY_RESULT_BACKEND = find_env('CELERY_RESULT_BACKEND')
 CELERY_TIMEZONE = TIME_ZONE
 CELERY_RESULT_EXTENDED = True
 CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True

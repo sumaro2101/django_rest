@@ -8,20 +8,19 @@ services:
       - .:/courses
     env_file:
       - .env
-
     command: >
-      sh -c 'python manage.py runserver 0.0.0.0:8000'
-
+      sh -c 'python manage.py makemigrations &
+       python manage.py migrate &
+        python manage.py loaddata data.json &
+         python manage.py runserver 0.0.0.0:8000'
     depends_on:
       - postgresql
       - redis
 
   postgresql:
     image: postgres:16.3-alpine3.20
-
     env_file:
       - .env
-      
     hostname: postgresql
 
   redis:
@@ -37,7 +36,6 @@ services:
       - .:/courses
     env_file:
       - .env
-
     hostname: celery
     entrypoint: celery
     command: -A config.celery.app worker --loglevel=info
@@ -46,3 +44,15 @@ services:
     depends_on:
       - courses
       - redis
+      - rabbitmq
+  
+  rabbitmq:
+    image: rabbitmq:3.13.7-management
+    hostname: rabbitmq
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - ./rabbitmq:/var/lib/rabbitmq
+    ports:
+      - 15672:15672

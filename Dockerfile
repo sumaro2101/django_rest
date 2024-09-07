@@ -5,6 +5,7 @@ RUN adduser --disabled-password app_user
 
 COPY requirements.txt /temp/requirements.txt
 RUN pip install -r /temp/requirements.txt
+RUN pip install --upgrade setuptools
 
 COPY . /courses
 WORKDIR /courses

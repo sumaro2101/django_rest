@@ -14,15 +14,15 @@ def send(id_course: int,
 
     Args:
         object_unique_name (str|None): Уникальное имя обекта_
-    """    
+    """
     try:
         send_mails(id_course, body_subject, body_template)
     except SMTPException as e:
         print(e)
-        
+
 
 @app.task
 def check_non_active_users():
     """Проверка не активных пользователей
-    """    
+    """
     return check_users()

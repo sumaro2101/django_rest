@@ -6,12 +6,14 @@ from typing import Any, Union, List
 
 
 class ValidateOnlyYoutubeLink:
-    
+
     def __init__(self, link: str) -> None:
         if not isinstance(link, str):
-            raise TypeError('Поле ссылки на видео может быть только str типом')
+            raise TypeError(
+                'Поле ссылки на видео может быть только str типом',
+                )
         self.link = link
-        
+
     def _is_youtube(self, value: List[str]) -> Union[None, ValidationError]:
         """Проверяет принадлежность ссылки к Youtube видео-хостингу
 
@@ -19,7 +21,8 @@ class ValidateOnlyYoutubeLink:
             value (str): Значение для проверки 
 
         Returns:
-            Union[None, ValidationError]: Возвращает None в случае успеха, а иначе ValidationError
+            Union[None, ValidationError]: Возвращает None в
+            случае успеха, а иначе ValidationError
         """
         link = value[-1]
         try:
@@ -30,12 +33,15 @@ class ValidateOnlyYoutubeLink:
                 domen = None
         except IndexError:
             domen = None
-        
+
         if domen:
             is_youtube = check_youtube_string(domen)
             if not is_youtube:
-                raise ValidationError(f'Ссылка "{link}", не является ссылкой на Youtube видео-хостинг')
-        
+                raise ValidationError(
+                    f'Ссылка "{link}", не является ссылкой '
+                    'на Youtube видео-хостинг',
+                    )
+
     def __call__(self, attrs) -> Any:
         checked_values = [
                 value for link, value in attrs.items() if link in self.link
@@ -43,7 +49,9 @@ class ValidateOnlyYoutubeLink:
             ]
         if checked_values:
             if not len(checked_values) == 1:
-                raise ValidationError(f'Было получено более одного значения по полю {self.link}')
-            
+                raise ValidationError(
+                    f'Было получено более одного '
+                    f'значения по полю {self.link}',
+                    )
+
             self._is_youtube(checked_values)
-            
